@@ -1,0 +1,32 @@
+{
+  "name": "jhofm/flysystem-iterator",
+  "description": "Provides an memory- and runtime efficient method to recursively iterate over paths in a flysystem\\FileSystem",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Johannes Hofmann",
+      "email": "hofmann.johannes@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1",
+    "league/flysystem": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.0",
+    "league/flysystem-memory": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jhofm\\FlysystemIterator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Jhofm\\FlysystemIterator\\Test\\Framework\\": "tests/framework",
+      "Jhofm\\FlysystemIterator\\Test\\Functional\\": "tests/functional",
+      "Jhofm\\FlysystemIterator\\Test\\Unit\\": "tests/unit"
+    }
+  }
+}
