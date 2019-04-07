@@ -1,11 +1,5 @@
 <?php
 
-/**
- * TODO
- * key: int or path, value: path or info
- * skippable directories
- */
-
 declare(strict_types = 1);
 
 namespace Jhofm\FlysystemIterator;
