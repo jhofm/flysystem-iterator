@@ -21,7 +21,7 @@ final class Options
 
     /** @var array $defaults */
     private static $defaults = [
-        self::OPTION_RETURN_KEY => self::VALUE_PATH_RELATIVE,
+        self::OPTION_RETURN_KEY => self::VALUE_INDEX,
         self::OPTION_RETURN_VALUE => self::VALUE_LIST_INFO
     ];
 
