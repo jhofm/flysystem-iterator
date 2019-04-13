@@ -9,12 +9,10 @@ use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\Test\Framework\TestException;
 
 /**
- * Class FilesystemIteratorTest
+ * Class FilesystemIteratorNonRecursiveTest
  * @package Jhofm\FlysystemIterator\Test\Functional
- *
- * @small
  */
-class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
+class FilesystemIteratorNonRecursiveTest extends AbstractFileSystemIteratorTest
 {
     /** @var FilesystemIterator $subject */
     private $subject;
@@ -22,9 +20,6 @@ class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
     /** @var array $expectedPaths */
     protected $expectedPaths = [
         'test-fs-iterator/a/',
-        'test-fs-iterator/a/a',
-        'test-fs-iterator/a/b/',
-        'test-fs-iterator/a/b/a',
         'test-fs-iterator/a/c'
     ];
 
@@ -41,24 +36,16 @@ class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
             [
                 Options::OPTION_RETURN_KEY => Options::VALUE_INDEX,
                 Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE,
-                Options::OPTION_RECURSIVE => true
+                Options::OPTION_RECURSIVE => false
             ]
         );
     }
 
     /**
      * @test
-     */
-    public function testCurrentWithoutResetYieldsFirstResult()
-    {
-        $this->assertEquals($this->expectedPaths[0], $this->subject->current());
-    }
-
-    /**
-     * @test
      *
      */
-    public function testIteratePathsByIndex()
+    public function testIteratePathsByIndexNonrecursive()
     {
         $i = 0;
         foreach ($this->subject as $index => $path) {

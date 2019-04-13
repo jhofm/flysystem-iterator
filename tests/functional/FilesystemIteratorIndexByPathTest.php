@@ -38,7 +38,8 @@ class FilesystemIteratorIndexByPathTest extends AbstractFileSystemIteratorTest
             $this->root,
             [
                 Options::OPTION_RETURN_KEY => Options::VALUE_PATH_RELATIVE,
-                Options::OPTION_RETURN_VALUE => Options::VALUE_INDEX
+                Options::OPTION_RETURN_VALUE => Options::VALUE_INDEX,
+                Options::OPTION_RECURSIVE => true
             ]
         );
     }

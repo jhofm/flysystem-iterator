@@ -1,8 +1,9 @@
 # flysystem-iterator
 
-Provides an Iterator to recursively iterate over paths in a Flysystem\FileSystem.
+Provides an Iterator to iterate over paths in a Flysystem\FileSystem.
 
-Iteration is more memory-efficient than Flysystem's recursive listContents lookup 
+The iterator can traverse subdirectories recursively if the recursion option is enabled. 
+Recursive iteration is more memory-efficient than Flysystem's recursive listContents lookup 
 ($filesystem->listContents('', true)), since only directory contents that are part
 of the current item's ancestry are kept in memory.\
 Execution time is also decreased for many usecases, since files can be processed without waiting for 
@@ -11,9 +12,21 @@ the whole directory recursion to complete.
 The Iterator is seekable, but will need to iterate to the target position without shortcuts, possibly rewinding 
 first if it's current position is higher that the desired one. 
 
+The second constructor parameter is the starting directory within the filesystem.
+Pass '/' or nothing to iterate over the root path the filesystem was created with. 
+
+Iterator behaviour can be changed controlled by passing a key/value configuration array as the third
+construction parameter (or the second argument if using the plugin).
+Constants exist in the Options\Options class for all available option keys and string values.
+
+Iterator recursion is disabled by default, enable it by passing the following option:
+```
+['recursive' => true]
+```
+
 By default, the iterator will return a numerical index as the key and the file information array returned 
 by listContents() for the current item.\
-Returned keys and values can be configured by passing a config array as the third constructor parameter:
+The keys and values returned can be configured like this:
 
 ```
 ['key' => <value>, 'value' => <value>]
@@ -21,7 +34,7 @@ Returned keys and values can be configured by passing a config array as the thir
 
 Possible values:
 
-* path-rel: path relative to the filesystem's initial directory, directory paths will have a trailing slash 
+* path: path relative to the filesystem's initial directory, directory paths will have a trailing slash 
 * index: numerical index of the item in the list
 * info: info array from FileSystem::listContents (only for values)
 
@@ -38,7 +51,8 @@ $fs = new Filesystem(
         LOCK_EX,
         LocalAdapter::SKIP_LINKS
     ),
-    ['key' => 'path', 'value' => 'info']
+    '/',
+    ['key' => 'path', 'value' => 'info', 'recursive' => true]
 );
 
 $iterator = new FilesystemIterator($fs);
