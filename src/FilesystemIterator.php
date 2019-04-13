@@ -76,7 +76,9 @@ class FilesystemIterator implements SeekableIterator
      */
     public function next()
     {
-        if ($this->innerIterator === null && $this->hasChildren()) {
+        if ($this->innerIterator === null
+            && $this->isRecursive()
+            && $this->hasChildren()) {
             $this->innerIterator = $this->getChildren();
             ++$this->innerIterations;
             return;
@@ -228,5 +230,15 @@ class FilesystemIterator implements SeekableIterator
     private function updateItem() : void
     {
         $this->item = isset($this->list[$this->index]) ? $this->list[$this->index] : null;
+    }
+
+    /**
+     * Check if iterator is in recursive mode
+     *
+     * @return bool
+     */
+    private function isRecursive() : bool
+    {
+        return (bool) $this->options->{Options::OPTION_RECURSIVE};
     }
 }
