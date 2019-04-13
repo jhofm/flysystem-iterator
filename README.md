@@ -10,7 +10,8 @@ Execution time is also decreased for many usecases, since files can be processed
 the whole directory recursion to complete.
 
 The Iterator is seekable, but will need to iterate to the target position without shortcuts, possibly rewinding 
-first if it's current position is higher that the desired one. 
+first if it's current position is higher that the desired one.\
+It is also countable and jsonSerializable. Calling either of those interfaces requires an iteration over all elements. 
 
 The second constructor parameter is the starting directory within the filesystem.
 Pass '/' or nothing to iterate over the root path the filesystem was created with. 
