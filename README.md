@@ -21,7 +21,7 @@ Returned keys and values can be configured by passing a config array as the thir
 
 Possible values:
 
-* path-rel: path relative to the filesystem's initial directory, directory paths will have a trailing slash 
+* path: path relative to the filesystem's initial directory, directory paths will have a trailing slash 
 * index: numerical index of the item in the list
 * info: info array from FileSystem::listContents (only for values)
 

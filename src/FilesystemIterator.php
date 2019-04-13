@@ -46,6 +46,8 @@ class FilesystemIterator implements SeekableIterator
             $this->dir = $this->dir . '/';
         }
         $this->options = Options::fromArray($options);
+        $this->list = $this->fs->listContents($this->dir);
+        $this->updateItem();
     }
 
     /**
@@ -76,7 +78,6 @@ class FilesystemIterator implements SeekableIterator
     {
         if ($this->innerIterator === null && $this->hasChildren()) {
             $this->innerIterator = $this->getChildren();
-            $this->innerIterator->rewind();
             ++$this->innerIterations;
             return;
         }
@@ -92,7 +93,7 @@ class FilesystemIterator implements SeekableIterator
         }
 
         ++$this->index;
-        $this->item = isset($this->list[$this->index]) ? $this->list[$this->index] : null;
+        $this->updateItem();
     }
 
     /**
@@ -146,8 +147,7 @@ class FilesystemIterator implements SeekableIterator
     public function rewind()
     {
        $this->index = 0;
-       $this->list = $this->fs->listContents($this->dir);
-       $this->item = isset($this->list[$this->index]) ? $this->list[$this->index] : null;
+       $this->updateItem();
        $this->innerIterator = null;
        $this->innerIterations = 0;
     }
@@ -161,9 +161,6 @@ class FilesystemIterator implements SeekableIterator
      */
     public function current()
     {
-        if ($this->list === null) {
-            $this->rewind();
-        }
         if ($this->options->{Options::OPTION_RETURN_VALUE} === Options::VALUE_INDEX) {
             return $this->getAbsoluteIndex();
         }
@@ -223,5 +220,13 @@ class FilesystemIterator implements SeekableIterator
         if ($current < $position) {
             throw new IteratorException(sprintf('Iterator out of bounds at position %u', $position));
         }
+    }
+
+    /**
+     * set current item by directory list and current index
+     */
+    private function updateItem() : void
+    {
+        $this->item = isset($this->list[$this->index]) ? $this->list[$this->index] : null;
     }
 }

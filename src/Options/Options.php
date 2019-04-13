@@ -15,7 +15,7 @@ final class Options
     const OPTION_RETURN_KEY = 'key';
     const OPTION_RETURN_VALUE = 'value';
 
-    const VALUE_PATH_RELATIVE = 'path-rel';
+    const VALUE_PATH_RELATIVE = 'path';
     const VALUE_LIST_INFO = 'info';
     const VALUE_INDEX = 'index';
 
@@ -31,7 +31,6 @@ final class Options
     /**
      * @param array $options
      * @return Options
-     * @throws OptionException
      */
     public static function fromArray(array $options) : Options
     {
