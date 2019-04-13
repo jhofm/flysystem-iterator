@@ -19,8 +19,8 @@ class FilesystemIteratorInfoByPathTest extends AbstractFileSystemIteratorTest
     /** @var FilesystemIterator $subject */
     private $subject;
 
-    /** @var array $expectedInfo */
-    protected $expectedInfo = [
+    /** @var array $expectedPaths */
+    protected $expectedPaths = [
         'test-fs-iterator/a/',
         'test-fs-iterator/a/a',
         'test-fs-iterator/a/b/',
@@ -52,7 +52,7 @@ class FilesystemIteratorInfoByPathTest extends AbstractFileSystemIteratorTest
     {
         $i = 0;
         foreach ($this->subject as $path => $info) {
-            $expectedPath = $this->expectedInfo[$i++];
+            $expectedPath = $this->expectedPaths[$i++];
             $shouldBeDir = $expectedPath{strlen($expectedPath)-1} === '/';
             $this->assertEquals($expectedPath, $path);
             $this->assertIsArray($info);
@@ -67,5 +67,13 @@ class FilesystemIteratorInfoByPathTest extends AbstractFileSystemIteratorTest
                 $info['path']
             );
         }
+    }
+
+    /**
+     * @test
+     */
+    public function testCount()
+    {
+        $this->assertCount(count($this->expectedPaths), $this->subject);
     }
 }

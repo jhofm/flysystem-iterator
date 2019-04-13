@@ -66,4 +66,13 @@ class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
             $this->assertEquals($this->expectedPaths[$i++], $path);
         }
     }
+
+    /**
+     * @test
+     */
+    public function testJsonSerializable()
+    {
+        $json = $this->subject->jsonSerialize();
+        $this->assertEquals(json_encode($this->expectedPaths), $json);
+    }
 }

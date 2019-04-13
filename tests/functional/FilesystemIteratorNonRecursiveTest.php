@@ -17,10 +17,20 @@ class FilesystemIteratorNonRecursiveTest extends AbstractFileSystemIteratorTest
     /** @var FilesystemIterator $subject */
     private $subject;
 
+    /** @var array $setupPaths */
+    protected $setupPaths = [
+        '/a/',
+        '/b',
+        '/c/',
+        '/d',
+    ];
+
     /** @var array $expectedPaths */
     protected $expectedPaths = [
         'test-fs-iterator/a/',
-        'test-fs-iterator/a/c'
+        'test-fs-iterator/b',
+        'test-fs-iterator/c/',
+        'test-fs-iterator/d'
     ];
 
     /**
@@ -43,7 +53,6 @@ class FilesystemIteratorNonRecursiveTest extends AbstractFileSystemIteratorTest
 
     /**
      * @test
-     *
      */
     public function testIteratePathsByIndexNonrecursive()
     {
@@ -52,5 +61,13 @@ class FilesystemIteratorNonRecursiveTest extends AbstractFileSystemIteratorTest
             $this->assertEquals($i, $index);
             $this->assertEquals($this->expectedPaths[$i++], $path);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function testCountNonrecursive()
+    {
+        $this->assertCount(count($this->expectedPaths), $this->subject);
     }
 }
