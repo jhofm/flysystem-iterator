@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Jhofm\FlysystemIterator\Plugin;
 
+use Jhofm\FlysystemIterator\FilesystemFilterIterator;
 use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\Options\Options;
+use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
@@ -29,13 +32,20 @@ class IteratorPlugin implements PluginInterface
     }
 
     /**
-     * @param string $dir
      * @param array $options
      * @return FilesystemIterator
      */
-    public function handle(string $dir = '/', array $options = [])
+    public function handle(array $options = [])
     {
-        return new FilesystemIterator($this->filesystem, $dir, $options);
+        $iterator = new FilesystemIterator($this->filesystem, '/', $options);
+        $options = Options::fromArray($options);
+        if ($options->{Options::OPTION_IS_RECURSIVE}) {
+            $iterator = new RecursiveFilesystemIteratorIterator($iterator);
+        }
+        if ($options->{Options::OPTION_FILTER} !== null) {
+            $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
+        }
+        return $iterator;
     }
 
     /**

@@ -11,8 +11,9 @@ use Jhofm\FlysystemIterator\Test\Framework\TestException;
 /**
  * Class FilesystemIteratorNonRecursiveTest
  * @package Jhofm\FlysystemIterator\Test\Functional
+ * @small
  */
-class FilesystemIteratorNonRecursiveTest extends AbstractFileSystemIteratorTest
+class FilesystemIteratorTest extends AbstractFileSystemIteratorTest
 {
     /** @var FilesystemIterator $subject */
     private $subject;
@@ -44,9 +45,7 @@ class FilesystemIteratorNonRecursiveTest extends AbstractFileSystemIteratorTest
             $this->fs,
             $this->root,
             [
-                Options::OPTION_RETURN_KEY => Options::VALUE_INDEX,
-                Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE,
-                Options::OPTION_RECURSIVE => false
+                Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE
             ]
         );
     }

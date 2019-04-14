@@ -27,13 +27,31 @@ abstract class AbstractFileSystemIteratorTest extends TestCase
     /** @var string $root */
     protected $root = '/test-fs-iterator';
 
-    /** @var array $setupPaths */ 
+    /** @var array $setupPaths default path to setup in the filesystem fixture */
     protected $setupPaths = [
         '/a/',
         '/a/a',
         '/a/b/',
-        'a/b/a',
-        '/a/c'
+        '/a/b/c/',
+        '/a/b/c/d',
+        '/a/b/a',
+        '/a/c',
+        '/a/d/',
+        '/a/d/a'
+    ];
+
+    /** @var array $expectedPaths paths the iterator is expected to contain by default */
+    protected $expectedPaths = [
+        'test-fs-iterator/',
+        'test-fs-iterator/a/',
+        'test-fs-iterator/a/a',
+        'test-fs-iterator/a/b/',
+        'test-fs-iterator/a/b/a',
+        'test-fs-iterator/a/b/c/',
+        'test-fs-iterator/a/b/c/d',
+        'test-fs-iterator/a/c',
+        'test-fs-iterator/a/d/',
+        'test-fs-iterator/a/d/a'
     ];
 
     /**

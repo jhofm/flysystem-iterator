@@ -1,6 +1,6 @@
 {
   "name": "jhofm/flysystem-iterator",
-  "description": "Provides an memory- and runtime efficient method to recursively iterate over paths in a flysystem\\FileSystem",
+  "description": "Iterator plugin for league/flysystem",
   "type": "library",
   "license": "MIT",
   "authors": [

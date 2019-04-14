@@ -7,6 +7,7 @@ namespace Jhofm\FlysystemIterator\Test\Functional;
 use Jhofm\FlysystemIterator\FilesystemIterator;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\Test\Framework\TestException;
+use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 
 /**
  * Class FilesystemIteratorTest
@@ -14,19 +15,10 @@ use Jhofm\FlysystemIterator\Test\Framework\TestException;
  *
  * @small
  */
-class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
+class RecursiveFilesystemIteratorIteratorPathTest extends AbstractFileSystemIteratorTest
 {
     /** @var FilesystemIterator $subject */
     private $subject;
-
-    /** @var array $expectedPaths */
-    protected $expectedPaths = [
-        'test-fs-iterator/a/',
-        'test-fs-iterator/a/a',
-        'test-fs-iterator/a/b/',
-        'test-fs-iterator/a/b/a',
-        'test-fs-iterator/a/c'
-    ];
 
     /**
      * Test setup
@@ -35,14 +27,14 @@ class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
     protected function setUp() : void
     {
         parent::setUp();
-        $this->subject = new FilesystemIterator(
-            $this->fs,
-            $this->root,
-            [
-                Options::OPTION_RETURN_KEY => Options::VALUE_INDEX,
-                Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE,
-                Options::OPTION_RECURSIVE => true
-            ]
+        $this->subject = new RecursiveFilesystemIteratorIterator(
+            new FilesystemIterator(
+                $this->fs,
+                '/',
+                [
+                    Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE,
+                ]
+            )
         );
     }
 
@@ -56,23 +48,13 @@ class FilesystemIteratorPathByIndexTest extends AbstractFileSystemIteratorTest
 
     /**
      * @test
-     *
      */
     public function testIteratePathsByIndex()
     {
-        $i = 0;
+        $i=0;
         foreach ($this->subject as $index => $path) {
             $this->assertEquals($i, $index);
             $this->assertEquals($this->expectedPaths[$i++], $path);
         }
-    }
-
-    /**
-     * @test
-     */
-    public function testJsonSerializable()
-    {
-        $json = $this->subject->jsonSerialize();
-        $this->assertEquals(json_encode($this->expectedPaths), $json);
     }
 }
