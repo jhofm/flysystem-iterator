@@ -10,22 +10,10 @@ use Jhofm\FlysystemIterator\Options\Options;
 /**
  * Class FilesystemIteratorInvalidOptionsTest
  * @package Jhofm\FlysystemIterator\Test\Functional
- *
  * @small
- *
  */
 class FilesystemIteratorInvalidOptionsTest extends AbstractFileSystemIteratorTest
 {
-    /**
-     * @test
-     * @expectedException \Jhofm\FlysystemIterator\IteratorException
-     */
-    public function testInvalidKeyOptionThrowsException()
-    {
-        $iterator = new FilesystemIterator($this->fs, '/', ['key' => 'foo']);
-        $iterator->key();
-    }
-
     /**
      * @test
      * @expectedException \Jhofm\FlysystemIterator\IteratorException

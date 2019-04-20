@@ -1,68 +1,60 @@
 # flysystem-iterator
 
-Provides an Iterator to iterate over paths in a Flysystem\FileSystem.
+Provides a plugin that creates an Iterator to iterate over paths in a Flysystem\FileSystem,
+supporting recursion and custom filters.
 
-The iterator can traverse subdirectories recursively if the recursion option is enabled. 
 Recursive iteration is more memory-efficient than Flysystem's recursive listContents lookup 
-($filesystem->listContents('', true)), since only directory contents that are part
+(`$filesystem->listContents('', true)`), since only directory contents that are part
 of the current item's ancestry are kept in memory.\
-Execution time is also decreased for many usecases, since files can be processed without waiting for 
-the whole directory recursion to complete.
-
-The Iterator is seekable, but will need to iterate to the target position without shortcuts, possibly rewinding 
-first if it's current position is higher that the desired one.\
-It is also countable and jsonSerializable. Calling either of those interfaces requires an iteration over all elements. 
-
-The second constructor parameter is the starting directory within the filesystem.
-Pass '/' or nothing to iterate over the root path the filesystem was created with. 
-
-Iterator behaviour can be changed controlled by passing a key/value configuration array as the third
-construction parameter (or the second argument if using the plugin).
+ 
+## Configuration options ##
+Iterator behaviour can be controlled by passing a key/value configuration array to the plugin.
 Constants exist in the Options\Options class for all available option keys and string values.
 
-Iterator recursion is disabled by default, enable it by passing the following option:
+Iterator recursion is enabled by default, and can be disabled by passing:
 ```
-['recursive' => true]
+['recursive' => false]
 ```
 
-By default, the iterator will return a numerical index as the key and the file information array returned 
-by listContents() for the current item.\
-The keys and values returned can be configured like this:
+The iterator will return a numerical index as the key and the file information array returned 
+by listContents() for the current item.
+
+The path of the current item, relative to the directory the filesystem was constructed with,
+may also be returned as the value. Unlike the paths in filesysstem's info array directories will have a trailing slash.  
 
 ```
-['key' => <value>, 'value' => <value>]
+['value' => 'path']
 ``` 
 
-Possible values:
+The paths that the iterator returns can be filtered by passing a filter closure.
+The current list item is passed to the filter. The item will be included in the result if the closure returns true.
+The following example only returns files (directories are skipped) with a size of 1kb or more.
 
-* path: path relative to the filesystem's initial directory, directory paths will have a trailing slash 
-* index: numerical index of the item in the list
-* info: info array from FileSystem::listContents (only for values)
+```
+[
+    'filter' =>
+        function(array $item) {
+            return $item['type'] === 'file' 
+            && $item['size'] >= 1024;
+        }
+]    
+```
 
-## Usage example (direct) ##
+A filter factory is included that provides a number of ready to use filter callbacks, 
+including boolean wrappers.
 
- ```
-use Jhofm\FlysystemIterator\FilesystemIterator;
-use League\Flysystem\Adapter\Local as LocalAdapter;
-use League\Flysystem\Filesystem;
+```
+[
+    'filter' =>
+        FilterFactory::and(
+        [
+            FilterFactory::isDirectory(),
+            FilterFactory::pathContainsString('not')
+        ]
+    )
+```    
 
-$fs = new Filesystem(
-    new LocalAdapter(
-        '/home/user',
-        LOCK_EX,
-        LocalAdapter::SKIP_LINKS
-    ),
-    '/',
-    ['key' => 'path', 'value' => 'info', 'recursive' => true]
-);
-
-$iterator = new FilesystemIterator($fs);
-foreach ($iterator as $index => $info) {
-    echo $key . ': ' . $info['path'] . "\n";
-} 
-``` 
-
-## Usage example (as plugin) ##
+## Usage example ##
 
 ```
 use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
@@ -78,8 +70,7 @@ $fs = new Filesystem(
 );
 $fs->addPlugin(new IteratorPlugin());
 
-$iterator = $fs->createIterator();
-$iterator->seek(99);
+$iterator = $fs->createIterator(['recursive' => false]);
 $fileinfo = $iterator->current();
 echo $iterator->key() . ': ' . $fileinfo['path'] . "\n";
 

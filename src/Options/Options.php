@@ -14,20 +14,17 @@ use InvalidArgumentException;
  */
 final class Options
 {
-    const OPTION_RETURN_KEY = 'key';
     const OPTION_RETURN_VALUE = 'value';
-    const OPTION_RECURSIVE = 'recursive';
-    const OPTION_FILTER = 'filter';
-
     const VALUE_PATH_RELATIVE = 'path';
     const VALUE_LIST_INFO = 'info';
-    const VALUE_INDEX = 'index';
+
+    const OPTION_IS_RECURSIVE = 'recursive';
+    const OPTION_FILTER = 'filter';
 
     /** @var array $defaults */
     private static $defaults = [
-        self::OPTION_RETURN_KEY => self::VALUE_INDEX,
         self::OPTION_RETURN_VALUE => self::VALUE_LIST_INFO,
-        self::OPTION_RECURSIVE => false,
+        self::OPTION_IS_RECURSIVE => true,
         self::OPTION_FILTER => null
     ];
 
