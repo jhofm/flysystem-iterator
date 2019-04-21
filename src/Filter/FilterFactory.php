@@ -14,10 +14,10 @@ class FilterFactory
 {
     /**
      * Combines an array of closures in an AND expression
-     * @param array $functions
+     * @param Closure ...$functions
      * @return Closure
      */
-    public static function and(array $functions) : Closure
+    public static function and(Closure ...$functions) : Closure
     {
         return function (array $item) use ($functions) : bool {
             foreach ($functions as $function) {
@@ -31,10 +31,10 @@ class FilterFactory
 
     /**
      * Combines an array of closures in an OR expression
-     * @param Closure[] $functions
+     * @param Closure  ...$functions
      * @return Closure
      */
-    public static function or(array $functions) : Closure
+    public static function or(Closure ...$functions) : Closure
     {
         return function (array $item) use ($functions) : bool {
             foreach ($functions as $function) {

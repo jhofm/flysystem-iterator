@@ -11,6 +11,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class IsFileFilterTest
  * @package Jhofm\FlysystemIterator\Test\Unit\Filter
+ *
+ * @group unit
  * @small
  */
 class IsFileFilterTest extends TestCase
@@ -26,7 +28,7 @@ class IsFileFilterTest extends TestCase
     /**
      * @return array
      */
-    public function dataProvider()
+    public function dataProvider() : array
     {
         return [
             [['type' => 'dir'], false],
