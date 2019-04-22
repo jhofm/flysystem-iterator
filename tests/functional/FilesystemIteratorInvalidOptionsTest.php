@@ -10,6 +10,7 @@ use Jhofm\FlysystemIterator\Options\Options;
 /**
  * Class FilesystemIteratorInvalidOptionsTest
  * @package Jhofm\FlysystemIterator\Test\Functional
+ * @group functional
  * @small
  */
 class FilesystemIteratorInvalidOptionsTest extends AbstractFileSystemIteratorTest

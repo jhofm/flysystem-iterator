@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Jhofm\FlysystemIterator;
 
+use Countable;
+use JsonSerializable;
 use RecursiveIteratorIterator;
+use SeekableIterator;
 use Traversable;
 
 /**
@@ -12,8 +15,10 @@ use Traversable;
  * @method FilesystemIterator getInnerIterator()
  * @method FilesystemIterator getSubIterator($level)
  */
-class RecursiveFilesystemIteratorIterator extends RecursiveIteratorIterator
+class RecursiveFilesystemIteratorIterator extends RecursiveIteratorIterator implements Countable, SeekableIterator, JsonSerializable
 {
+    use SeekableIteratorTrait, JsonSerializableIteratorTrait, CountableIteratorTrait;
+
     /** @var int */
     private $globalIndex = 0;
 

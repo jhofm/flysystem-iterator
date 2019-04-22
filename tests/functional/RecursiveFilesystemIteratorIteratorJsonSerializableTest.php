@@ -6,16 +6,16 @@ namespace Jhofm\FlysystemIterator\Test\Functional;
 
 use Jhofm\FlysystemIterator\FilesystemIterator;
 use Jhofm\FlysystemIterator\Options\Options;
-use Jhofm\FlysystemIterator\Test\Framework\TestException;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
+use Jhofm\FlysystemIterator\Test\Framework\TestException;
 
 /**
- * Class FilesystemIteratorTest
+ * Class RecursiveFilesystemIteratorIteratorJsonSerializableTest
  * @package Jhofm\FlysystemIterator\Test\Functional
  * @group functional
  * @small
  */
-class RecursiveFilesystemIteratorIteratorPathTest extends AbstractFileSystemIteratorTest
+class RecursiveFilesystemIteratorIteratorJsonSerializableTest extends AbstractFileSystemIteratorTest
 {
     /** @var RecursiveFilesystemIteratorIterator $subject */
     private $subject;
@@ -38,23 +38,8 @@ class RecursiveFilesystemIteratorIteratorPathTest extends AbstractFileSystemIter
         );
     }
 
-    /**
-     * @test
-     */
-    public function testCurrentWithoutResetYieldsFirstResult()
+    public function testJsonSerializeable()
     {
-        $this->assertEquals($this->expectedPaths[0], $this->subject->current());
-    }
-
-    /**
-     * @test
-     */
-    public function testIteratePathsByIndex()
-    {
-        $i=0;
-        foreach ($this->subject as $index => $path) {
-            $this->assertEquals($i, $index);
-            $this->assertEquals($this->expectedPaths[$i++], $path);
-        }
+        $this->assertEquals(json_encode($this->expectedPaths), json_encode($this->subject));
     }
 }

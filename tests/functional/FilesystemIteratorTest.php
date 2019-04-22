@@ -11,6 +11,7 @@ use Jhofm\FlysystemIterator\Test\Framework\TestException;
 /**
  * Class FilesystemIteratorNonRecursiveTest
  * @package Jhofm\FlysystemIterator\Test\Functional
+ * @group functional
  * @small
  */
 class FilesystemIteratorTest extends AbstractFileSystemIteratorTest

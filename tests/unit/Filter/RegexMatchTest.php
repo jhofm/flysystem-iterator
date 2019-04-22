@@ -4,47 +4,41 @@ declare(strict_types=1);
 
 namespace Jhofm\FlysystemIterator\Test\Unit\Filter;
 
-use Closure;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class IsDirectoryFilterTest
+ * Class RegexMatchTest
  * @package Jhofm\FlysystemIterator\Test\Unit\Filter
  *
  * @group unit
  * @small
  */
-class IsDirectoryFilterTest extends TestCase
+class RegexMatchTest extends TestCase
 {
-    /** @var Closure */
     private $subject;
 
     public function setUp()
     {
-       $this->subject = FilterFactory::isDirectory();
+        $this->subject = FilterFactory::pathMatchesRegex('/^.*a$/');
     }
 
-    /**
-     * @return array
-     */
-    public function dataProvider()
+    public function dataProvider() : array
     {
         return [
-            [['type' => 'dir'], true],
-            [['type' => 'file'], false],
-            [['type' => 'foo'], false],
-            [['foo' => 'bar'], false]
+            [['path' => '/bla'], true],
+            [['path' => '/foo'], false],
+            [['path' => '/foo/ba'], true],
+            [['path' => '/'], false]
         ];
     }
 
     /**
-     * @test
      * @dataProvider dataProvider
      * @param array $item
      * @param bool $expectedResult
      */
-    public function testFilter(array $item, bool $expectedResult)
+    public function testRegexMatchFilter(array $item, bool $expectedResult)
     {
         $this->assertEquals($expectedResult, ($this->subject)($item));
     }

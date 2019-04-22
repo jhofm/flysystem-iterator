@@ -8,13 +8,16 @@ use Countable;
 use Jhofm\FlysystemIterator\Options\Options;
 use League\Flysystem\Filesystem;
 use RecursiveIterator;
+use SeekableIterator;
 
 /**
  * Class FilesystemIterator
  * @package Jhofm\FlysystemIterator
  */
-class FilesystemIterator implements RecursiveIterator, Countable
+class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterator, \JsonSerializable
 {
+    use SeekableIteratorTrait, CountableIteratorTrait, JsonSerializableIteratorTrait;
+
     /** @var Filesystem $fs */
     private $fs;
     /** @var string $dir directory the iterator iterates over */
@@ -155,22 +158,5 @@ class FilesystemIterator implements RecursiveIterator, Countable
     private function updateItem() : void
     {
         $this->item = isset($this->list[$this->index]) ? $this->list[$this->index] : null;
-    }
-
-    /**
-     * Count elements of an object
-     *
-     * Can be expensive to compute since it requires a full iteration over all elements
-     *
-     * @link https://php.net/manual/en/countable.count.php
-     * @return int The custom count as an integer.
-     * </p>
-     * <p>
-     * The return value is cast to an integer.
-     * @since 5.1.0
-     */
-    public function count()
-    {
-        return iterator_count($this);
     }
 }

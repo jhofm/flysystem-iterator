@@ -11,6 +11,12 @@ use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use Jhofm\FlysystemIterator\Test\Framework\TestException;
 
+/**
+ * Class FilesystemFilterIteratorTest
+ * @package Jhofm\FlysystemIterator\Test\Functional
+ * @group functional
+ * @small
+ */
 class FilesystemFilterIteratorTest extends AbstractFileSystemIteratorTest
 {
     /** @var FilesystemIterator $subject */
@@ -20,7 +26,8 @@ class FilesystemFilterIteratorTest extends AbstractFileSystemIteratorTest
     protected $expectedPaths = [
         'test-fs-iterator/a/b/c/',
         'test-fs-iterator/a/b/c/d',
-        'test-fs-iterator/a/c'
+        'test-fs-iterator/a/c',
+        'test-fs-iterator/c'
     ];
 
     /**

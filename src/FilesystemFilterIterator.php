@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Jhofm\FlysystemIterator;
 
 use Closure;
+use Countable;
 use FilterIterator;
 use Iterator;
+use JsonSerializable;
+use SeekableIterator;
 
 /**
  * Class FilteredFilesystemIterator
@@ -14,8 +17,10 @@ use Iterator;
  *
  * @method FilesystemIterator getInnerIterator()
  */
-class FilesystemFilterIterator extends FilterIterator
+class FilesystemFilterIterator extends FilterIterator implements SeekableIterator, Countable, JsonSerializable
 {
+    use SeekableIteratorTrait, CountableIteratorTrait, JsonSerializableIteratorTrait;
+
     /** @var callable  */
     protected $filter;
 

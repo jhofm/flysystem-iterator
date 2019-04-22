@@ -8,47 +8,31 @@ use Jhofm\FlysystemIterator\FilesystemFilterIterator;
 use Jhofm\FlysystemIterator\FilesystemIterator;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
-use Jhofm\FlysystemIterator\Test\Framework\TestException;
+use League\Flysystem\Filesystem;
 
 /**
- * Class FilesystemIteratorCustomFilterTest
+ * Class FilesystemIteratorAllPassFilterTest
  * @package Jhofm\FlysystemIterator\Test\Functional
  * @group functional
  * @small
  */
-class FilesystemIteratorCustomDirectoryFilterTest extends AbstractFileSystemIteratorTest
+class FilesystemIteratorAllPassFilterTest extends AbstractFileSystemIteratorTest
 {
-    /** @var FilesystemIterator $subject */
     private $subject;
 
-    /** @var array $setupPaths default path to setup in the filesystem fixture */
-    protected $expectedPaths = [
-        'test-fs-iterator/a/',
-        'test-fs-iterator/a/b/',
-        'test-fs-iterator/a/b/c/',
-        'test-fs-iterator/a/d/',
-        'test-fs-iterator/d/'
-    ];
-
-    /**
-     * Test setup
-     * @throws TestException
-     */
-    protected function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->subject = new FilesystemFilterIterator(
             new RecursiveFilesystemIteratorIterator(
                 new FilesystemIterator(
                     $this->fs,
-                    $this->root,
-                    [
-                        Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE,
-                    ]
+                    '/',
+                    [Options::OPTION_RETURN_VALUE => Options::VALUE_PATH_RELATIVE]
                 )
             ),
-            function (array $item) : bool {
-                return $item['type'] === 'dir';
+            function (array $item) {
+                return true;
             }
         );
     }
@@ -56,7 +40,7 @@ class FilesystemIteratorCustomDirectoryFilterTest extends AbstractFileSystemIter
     /**
      * @test
      */
-    public function testIteratePathsByIndex()
+    public function testIteratePaths()
     {
         $i = 0;
         foreach ($this->subject as $index => $path) {
