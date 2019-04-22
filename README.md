@@ -6,6 +6,9 @@ supporting recursion and custom filters.
 Recursive iteration is more memory-efficient than Flysystem's recursive listContents lookup 
 (`$filesystem->listContents('', true)`), since only directory contents that are part
 of the current item's ancestry are kept in memory.
+
+The returned iterator is seekable, countable and jsonserializable. Using these functions will often require
+a complete recursion over all items in the filesystem. 
  
 ## Configuration options ##
 Iterator behaviour can be controlled by passing a key/value configuration array to the plugin.
@@ -49,11 +52,9 @@ including boolean wrappers.
 [
     'filter' =>
         FilterFactory::and(
-        [
             FilterFactory::isDirectory(),
-            FilterFactory::pathContainsString('not')
-        ]
-    )
+            FilterFactory::pathContainsString('foo')
+        )
 ```    
 
 ## Usage example ##
@@ -62,6 +63,7 @@ including boolean wrappers.
 use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\Filesystem;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
 
 $fs = new Filesystem(
     new LocalAdapter(
@@ -72,8 +74,12 @@ $fs = new Filesystem(
 );
 $fs->addPlugin(new IteratorPlugin());
 
-$iterator = $fs->createIterator(['recursive' => false]);
+$iterator = $fs->createIterator(
+    ['filter' => FilterFactory::isFile()]
+);
+
 foreach ($iterator as $key => $item) {
     echo $i . ' ' . $item['path'] . "\n";
 }
+var_dump(json_encode($iterator));
 ```
