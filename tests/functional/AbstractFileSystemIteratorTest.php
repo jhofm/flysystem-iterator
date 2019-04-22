@@ -37,7 +37,10 @@ abstract class AbstractFileSystemIteratorTest extends TestCase
         '/a/b/a',
         '/a/c',
         '/a/d/',
-        '/a/d/a'
+        '/a/d/a',
+        '/b',
+        '/c',
+        '/d/'
     ];
 
     /** @var array $expectedPaths paths the iterator is expected to contain by default */
@@ -51,7 +54,10 @@ abstract class AbstractFileSystemIteratorTest extends TestCase
         'test-fs-iterator/a/b/c/d',
         'test-fs-iterator/a/c',
         'test-fs-iterator/a/d/',
-        'test-fs-iterator/a/d/a'
+        'test-fs-iterator/a/d/a',
+        'test-fs-iterator/b',
+        'test-fs-iterator/c',
+        'test-fs-iterator/d/'
     ];
 
     /**

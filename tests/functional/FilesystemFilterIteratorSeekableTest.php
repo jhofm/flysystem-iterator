@@ -8,26 +8,19 @@ use Jhofm\FlysystemIterator\FilesystemFilterIterator;
 use Jhofm\FlysystemIterator\FilesystemIterator;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
-use Jhofm\FlysystemIterator\Test\Framework\TestException;
+use SeekableIterator;
 
 /**
- * Class FilesystemIteratorCustomNopassFilterTest
+ * Class FilesystemFilterIteratorSeekableTest
  * @package Jhofm\FlysystemIterator\Test\Functional
  * @group functional
  * @small
  */
-class FilesystemIteratorCustomNopassFilterTest extends AbstractFileSystemIteratorTest
+class FilesystemFilterIteratorSeekableTest extends AbstractSeekableTest
 {
-    private $subject;
-
-    /**
-     * Test setup
-     * @throws TestException
-     */
-    protected function setUp() : void
+    protected function getSubject(): SeekableIterator
     {
-        parent::setUp();
-        $this->subject = new FilesystemFilterIterator(
+        return new FilesystemFilterIterator(
             new RecursiveFilesystemIteratorIterator(
                 new FilesystemIterator(
                     $this->fs,
@@ -37,17 +30,9 @@ class FilesystemIteratorCustomNopassFilterTest extends AbstractFileSystemIterato
                     ]
                 )
             ),
-            function (array $item) : bool {
-                return false;
+            function (array $item) {
+                return true;
             }
         );
-    }
-
-    /**
-     * @test
-     */
-    public function testCountIsZero()
-    {
-        $this->assertCount(0, $this->subject);
     }
 }

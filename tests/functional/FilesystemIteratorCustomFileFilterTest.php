@@ -13,6 +13,7 @@ use Jhofm\FlysystemIterator\Test\Framework\TestException;
 /**
  * Class FilesystemIteratorCustomFileFilterTest
  * @package Jhofm\FlysystemIterator\Test\Functional
+ * @group functional
  * @small
  */
 class FilesystemIteratorCustomFileFilterTest extends AbstractFileSystemIteratorTest
@@ -25,7 +26,9 @@ class FilesystemIteratorCustomFileFilterTest extends AbstractFileSystemIteratorT
         'test-fs-iterator/a/b/a',
         'test-fs-iterator/a/b/c/d',
         'test-fs-iterator/a/c',
-        'test-fs-iterator/a/d/a'
+        'test-fs-iterator/a/d/a',
+        'test-fs-iterator/b',
+        'test-fs-iterator/c'
     ];
 
     /**

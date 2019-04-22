@@ -13,7 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class IteratorPluginTest
- * @package functional
+ * @package Jhofm\FlysystemIterator\Test\Functional
+ * @group functional
+ * @small
  */
 class IteratorPluginTest extends TestCase
 {
