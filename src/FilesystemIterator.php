@@ -41,7 +41,7 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
     public function __construct(Filesystem $fs, string $dir = '/', array $options = [])
     {
         $this->fs = $fs;
-        $this->dir = $dir{strlen($dir)-1} !== '/' ? $dir . '/' : $dir;
+        $this->dir = $dir[strlen($dir)-1] !== '/' ? $dir . '/' : $dir;
         $this->options = Options::fromArray($options);
         $this->list = $this->fs->listContents($this->dir);
         $this->updateItem();
