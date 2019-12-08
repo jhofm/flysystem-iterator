@@ -41,6 +41,8 @@ class IteratorPlugin implements PluginInterface
         $options = Options::fromArray($options);
         if ($options->{Options::OPTION_IS_RECURSIVE}) {
             $iterator = new RecursiveFilesystemIteratorIterator($iterator);
+            //skip the root directory itself
+            $iterator->next();
         }
         if ($options->{Options::OPTION_FILTER} !== null) {
             $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
