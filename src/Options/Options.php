@@ -20,12 +20,14 @@ final class Options
 
     const OPTION_IS_RECURSIVE = 'recursive';
     const OPTION_FILTER = 'filter';
+    const OPTION_LIST_WITH = 'list-with';
 
     /** @var array $defaults */
     private static $defaults = [
         self::OPTION_RETURN_VALUE => self::VALUE_LIST_INFO,
         self::OPTION_IS_RECURSIVE => true,
-        self::OPTION_FILTER => null
+        self::OPTION_FILTER => null,
+        self::OPTION_LIST_WITH => []
     ];
 
     /** @var array $options */
