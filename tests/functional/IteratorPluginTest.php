@@ -49,4 +49,16 @@ class IteratorPluginTest extends TestCase
         $iter = $this->fs->createIterator(['filter' => function(array $item) { return true;}]);
         $this->assertInstanceOf(FilesystemFilterIterator::class, $iter);
     }
+
+    /**
+     * @test
+     */
+    public function testIterateSubDirectory()
+    {
+        $this->fs->createDir('foo');
+        $this->fs->write('/foo/bar', 'baz');
+        $iter = $this->fs->createIterator([], 'foo');
+        $this->assertTrue($iter->valid());
+        $this->assertCount(1, $iter);
+    }
 }

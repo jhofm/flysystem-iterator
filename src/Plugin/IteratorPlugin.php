@@ -33,11 +33,12 @@ class IteratorPlugin implements PluginInterface
 
     /**
      * @param array $options
+     * @param string [optional] dir
      * @return FilesystemIterator
      */
-    public function handle(array $options = [])
+    public function handle(array $options = [], $dir = '/')
     {
-        $iterator = new FilesystemIterator($this->filesystem, '/', $options);
+        $iterator = new FilesystemIterator($this->filesystem, $dir, $options);
         $options = Options::fromArray($options);
         if ($options->{Options::OPTION_IS_RECURSIVE}) {
             $iterator = new RecursiveFilesystemIteratorIterator($iterator);
