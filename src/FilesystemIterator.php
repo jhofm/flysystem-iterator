@@ -30,6 +30,8 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
     private $index = 0;
     /** @var Options $options iterator configuration */
     private $options;
+    /** @var bool include additional metadata such as mimetype if list-with options are provided */
+    private $addMetaData = false;
 
     /**
      * FilesystemPathIterator constructor.
@@ -43,6 +45,7 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
         $this->fs = $fs;
         $this->dir = $dir[strlen($dir)-1] !== '/' ? $dir . '/' : $dir;
         $this->options = Options::fromArray($options);
+        $this->addMetaData = count($this->options->{Options::OPTION_LIST_WITH}) > 0;
         $this->list = $this->fs->listContents($this->dir);
         $this->updateItem();
     }
@@ -133,6 +136,10 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
      */
     public function getCurrentItem() : ?array
     {
+        if ($this->addMetaData && $this->item && $this->item['type'] === 'file') {
+            $missingKeys = array_diff($this->options->{Options::OPTION_LIST_WITH}, array_keys($this->item));
+            return array_reduce($missingKeys, [$this, 'getMetadataByName'], $this->item);
+        }
         return $this->item;
     }
 
@@ -142,6 +149,27 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
     private function getCurrentPath() : string
     {
         return $this->item['path'] . ($this->isDirectory() ? '/' : '');
+    }
+
+    /**
+     * Get a meta-data value by key name.
+     * Emulates behaviour of FlySystems ListWith plugin
+     * (add additional metadata from the filesystem to returned items)
+     *
+     * @param array $item
+     * @param string $key
+     *
+     * @return array
+     * @throws IteratorException
+     */
+    private function getMetadataByName(array $item, $key) : array
+    {
+        $method = 'get' . ucfirst($key);
+        if ( ! method_exists($this->fs, $method)) {
+            throw new IteratorException('Could not get metadata for key: ' . $key);
+        }
+        $item[$key] = $this->fs->{$method}($item['path']);
+        return $item;
     }
 
     /**

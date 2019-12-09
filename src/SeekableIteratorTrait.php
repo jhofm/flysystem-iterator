@@ -20,7 +20,7 @@ trait SeekableIteratorTrait
      */
     public function seek($position)
     {
-        //recursiveiteratoriterator will deliver fist element twice if starting on a dir without calling rewind() first
+        //recursiveiteratoriterator will deliver first element twice if starting on a dir without calling rewind() first
         $this->rewind();
         $current = $this->key();
         if ($current === $position) {
