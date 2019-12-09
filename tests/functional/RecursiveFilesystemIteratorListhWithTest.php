@@ -5,32 +5,24 @@ declare(strict_types=1);
 namespace Jhofm\FlysystemIterator\Test\Functional;
 
 use Jhofm\FlysystemIterator\FilesystemIterator;
-use Jhofm\FlysystemIterator\IteratorException;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
-use Jhofm\FlysystemIterator\Test\Framework\TestException;
 
 /**
- * Class RecursiveFilesysteemIteratorListhWithTest
+ * Class RecursiveFilesystemIteratorListhWithTest
  *
  * @package Jhofm\FlysystemIterator\Test\Functional
  * @group functional
  * @small
  */
-class RecursiveFilesysteemIteratorListhWithTest extends AbstractFileSystemIteratorTest
+class RecursiveFilesystemIteratorListhWithTest extends AbstractFileSystemIteratorTest
 {
     /** @var RecursiveFilesystemIteratorIterator $subject */
     private $subject;
 
     /**
-     * Test setup
-     * @throws TestException
+     * @test
      */
-    protected function setUp() : void
-    {
-        parent::setUp();
-    }
-
     public function testEmptyListYieldsItem()
     {
         $this->subject = new RecursiveFilesystemIteratorIterator(
@@ -50,7 +42,6 @@ class RecursiveFilesysteemIteratorListhWithTest extends AbstractFileSystemIterat
         $this->assertArrayNotHasKey('mimetype', $item);
 
         //forward to first file
-        $this->subject->next();
         $this->subject->next();
         $this->subject->next();
         $item = $this->subject->current();
@@ -77,7 +68,6 @@ class RecursiveFilesysteemIteratorListhWithTest extends AbstractFileSystemIterat
             )
         );
         //forward to first file
-        $this->subject->next();
         $this->subject->next();
         $this->subject->next();
         $this->subject->current();

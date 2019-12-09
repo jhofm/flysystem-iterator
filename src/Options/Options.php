@@ -21,13 +21,15 @@ final class Options
     const OPTION_IS_RECURSIVE = 'recursive';
     const OPTION_FILTER = 'filter';
     const OPTION_LIST_WITH = 'list-with';
+    const OPTION_SKIP_ROOT_DIRECTORY = 'skip-root';
 
     /** @var array $defaults */
     private static $defaults = [
         self::OPTION_RETURN_VALUE => self::VALUE_LIST_INFO,
         self::OPTION_IS_RECURSIVE => true,
         self::OPTION_FILTER => null,
-        self::OPTION_LIST_WITH => []
+        self::OPTION_LIST_WITH => [],
+        self::OPTION_SKIP_ROOT_DIRECTORY => false
     ];
 
     /** @var array $options */

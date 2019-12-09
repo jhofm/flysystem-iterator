@@ -33,7 +33,7 @@ class IteratorPlugin implements PluginInterface
 
     /**
      * @param array $options
-     * @param string [optional] dir
+     * @param string [optional] $dir
      * @return FilesystemIterator
      */
     public function handle(array $options = [], $dir = '/')
@@ -41,9 +41,7 @@ class IteratorPlugin implements PluginInterface
         $iterator = new FilesystemIterator($this->filesystem, $dir, $options);
         $options = Options::fromArray($options);
         if ($options->{Options::OPTION_IS_RECURSIVE}) {
-            $iterator = new RecursiveFilesystemIteratorIterator($iterator);
-            //skip the root directory itself
-            $iterator->next();
+            $iterator = new RecursiveFilesystemIteratorIterator($iterator, $options);
         }
         if ($options->{Options::OPTION_FILTER} !== null) {
             $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
