@@ -16,18 +16,33 @@ Constants exist in the Options\Options class for all available option keys and s
 
 Iterator recursion is enabled by default, and can be disabled by passing:
 ```
-['recursive' => false]
+'recursive' => false
 ```
+
+When recursion is enabled, the first value returned by the iterator will be the directory that is iterated over.
+To ignore the root directory and start iteration with the directories contents you can pass the parameter
+
+```
+'skip-root' => true
+```
+This parameter has no effect if recursion is disabled.
 
 The iterator will return a numerical index as the key and the file information array returned 
 by listContents() for the current item.
 
-The path of the current item, relative to the directory the filesystem was constructed with,
-may also be returned as the value. Unlike the paths in filesysstem's info array directories 
-will have a trailing slash.  
+Additional filesystem metadata can be added to the items by passing an array of additional properties to the configuration array.
+Allowed property names are the same as in Flysystem's ListWith plugin.
 
 ```
-['value' => 'path']
+'list-with' => 'mimetype'
+```
+
+Alternatively, the path of the current item, relative to the directory being iterated,
+may be returned as the value instead of the info array. Unlike the paths in filesystem's info array directories 
+will have a trailing slash, so it is possible to distinguish files from directories without the type information.  
+
+```
+'value' => 'path'
 ``` 
 
 The paths that the iterator returns can be filtered by passing a filter closure.
@@ -57,6 +72,9 @@ including boolean wrappers.
         )
 ```    
 
+A subdirectory can be specified as an optional second parameter to the createIterator() function.
+If omitted, the iterator will use the directory set by the filesystem adapter.
+
 ## Usage example ##
 
 ```
@@ -75,7 +93,8 @@ $fs = new Filesystem(
 $fs->addPlugin(new IteratorPlugin());
 
 $iterator = $fs->createIterator(
-    ['filter' => FilterFactory::isFile()]
+    ['filter' => FilterFactory::isFile(), 'skip-root' => true],
+    'subdirectory'
 );
 
 foreach ($iterator as $key => $item) {
