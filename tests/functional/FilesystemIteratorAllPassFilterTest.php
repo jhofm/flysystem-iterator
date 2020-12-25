@@ -20,7 +20,7 @@ class FilesystemIteratorAllPassFilterTest extends AbstractFileSystemIteratorTest
 {
     private $subject;
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
         $this->subject = new FilesystemFilterIterator(

@@ -76,13 +76,13 @@ class DirectoryBuilder
      */
     private function createPath(string $path) : string
     {
-        if ($path{0} !== '/') {
+        if ($path[0] !== '/') {
             $path = '/' . $path;
         }
         $absPath = $this->basePath . $path;
 
         // path that do not end in slash are considered files and created with dummy content
-        if ($path{strlen($path)-1} !== '/') {
+        if ($path[strlen($path)-1] !== '/') {
             $this->fs->write($absPath, '.');
         } else {
             $this->fs->createDir($absPath);

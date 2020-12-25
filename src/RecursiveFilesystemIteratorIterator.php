@@ -58,8 +58,23 @@ class RecursiveFilesystemIteratorIterator extends RecursiveIteratorIterator impl
 
     private function skipRootDirectory()
     {
-        if ($this->options !== null && $this->options->{Options::OPTION_SKIP_ROOT_DIRECTORY}) {
+        if ($this->options !== null
+            && $this->options->{Options::OPTION_SKIP_ROOT_DIRECTORY} === true
+            && $this->currentItemIsDirectory()
+        ) {
             $this->next();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function currentItemIsDirectory() : bool
+    {
+        $item = $this->current();
+        if (is_array($item)) {
+            return $item['type'] === 'dir';
+        }
+        return preg_match('~.*/$~', $item) === 1;
     }
 }

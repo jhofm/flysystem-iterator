@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace functional;
 
 use Jhofm\FlysystemIterator\FilesystemFilterIterator;
+use Jhofm\FlysystemIterator\IteratorException;
 use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use League\Flysystem\Filesystem;
@@ -48,6 +49,18 @@ class IteratorPluginTest extends TestCase
     {
         $iter = $this->fs->createIterator(['filter' => function(array $item) { return true;}]);
         $this->assertInstanceOf(FilesystemFilterIterator::class, $iter);
+    }
+
+    /**
+     * Test create recursive fs iterator iterator via filesystem plugin
+     * @test
+     * @small
+     */
+    public function testFilterIteratorWithPathsThrowsException()
+    {
+        $this->expectException(IteratorException::class);
+        $this->expectExceptionMessage('Filters only work on list info return values.');
+        $this->fs->createIterator(['filter' => function(array $item) { return true;}, 'value' => 'path']);
     }
 
     /**

@@ -64,7 +64,7 @@ abstract class AbstractFileSystemIteratorTest extends TestCase
      * Test setup
      * @throws TestException
      */
-    protected function setUp() : void
+    protected function setUp()
     {
         $this->fs = new Filesystem(new MemoryAdapter());
         $this->dirBuilder = new DirectoryBuilder($this->root, $this->fs);
@@ -74,7 +74,7 @@ abstract class AbstractFileSystemIteratorTest extends TestCase
     /**
      * Test teardown
      */
-    protected function tearDown(): void
+    protected function tearDown()
     {
         $this->dirBuilder->clearBasePath();
     }

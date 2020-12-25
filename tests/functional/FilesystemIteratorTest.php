@@ -39,7 +39,7 @@ class FilesystemIteratorTest extends AbstractFileSystemIteratorTest
      * Test setup
      * @throws TestException
      */
-    protected function setUp() : void
+    protected function setUp()
     {
         parent::setUp();
         $this->subject = new FilesystemIterator(

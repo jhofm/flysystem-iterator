@@ -6,6 +6,7 @@ namespace Jhofm\FlysystemIterator\Plugin;
 
 use Jhofm\FlysystemIterator\FilesystemFilterIterator;
 use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\IteratorException;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use League\Flysystem\Filesystem;
@@ -35,6 +36,7 @@ class IteratorPlugin implements PluginInterface
      * @param array $options
      * @param string [optional] $dir
      * @return FilesystemIterator
+     * @throws IteratorException
      */
     public function handle(array $options = [], $dir = '/')
     {
@@ -44,6 +46,9 @@ class IteratorPlugin implements PluginInterface
             $iterator = new RecursiveFilesystemIteratorIterator($iterator, $options);
         }
         if ($options->{Options::OPTION_FILTER} !== null) {
+            if ($options->{Options::OPTION_RETURN_VALUE} !== Options::VALUE_LIST_INFO) {
+                throw new IteratorException('Filters only work on list info return values.');
+            }
             $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
         }
         return $iterator;

@@ -134,7 +134,7 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
     /**
      * @return array|null
      */
-    public function getCurrentItem() : ?array
+    public function getCurrentItem()
     {
         if ($this->addMetaData && $this->item && $this->item['type'] === 'file') {
             $missingKeys = array_diff($this->options->{Options::OPTION_LIST_WITH}, array_keys($this->item));
@@ -183,7 +183,7 @@ class FilesystemIterator implements RecursiveIterator, Countable, SeekableIterat
     /**
      * set current item by directory list and current index
      */
-    private function updateItem() : void
+    private function updateItem()
     {
         $this->item = isset($this->list[$this->index]) ? $this->list[$this->index] : null;
     }

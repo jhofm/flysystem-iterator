@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jhofm\FlysystemIterator\Test\Functional;
 
 use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\IteratorException;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 
@@ -22,6 +23,7 @@ class RecursiveFilesystemIteratorListhWithTest extends AbstractFileSystemIterato
 
     /**
      * @test
+     * @throws IteratorException
      */
     public function testEmptyListYieldsItem()
     {
@@ -49,15 +51,14 @@ class RecursiveFilesystemIteratorListhWithTest extends AbstractFileSystemIterato
         $this->assertArrayHasKey('type', $item);
         $this->assertEquals('file', $item['type']);
         $this->assertArrayHasKey('mimetype', $item);
-        $this->assertEquals('application/octet-stream', $item['mimetype']);
     }
 
     /**
      * @test
-     * @expectedException \Jhofm\FlysystemIterator\IteratorException
      */
     public function testIvalidMetaDataKeyThrowsxception()
     {
+        $this->expectException(IteratorException::class);
         $this->subject = new RecursiveFilesystemIteratorIterator(
             new FilesystemIterator(
                 $this->fs,

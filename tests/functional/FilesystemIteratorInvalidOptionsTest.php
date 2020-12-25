@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Jhofm\FlysystemIterator\Test\Functional;
 
+use InvalidArgumentException;
 use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\IteratorException;
 use Jhofm\FlysystemIterator\Options\Options;
 
 /**
@@ -17,20 +19,20 @@ class FilesystemIteratorInvalidOptionsTest extends AbstractFileSystemIteratorTes
 {
     /**
      * @test
-     * @expectedException \Jhofm\FlysystemIterator\IteratorException
      */
     public function testInvalidValueOptionThrowsException()
     {
+        $this->expectException(IteratorException::class);
         $iterator = new FilesystemIterator($this->fs, '/', ['value' => 'foo']);
         $iterator->current();
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function getGetInvalidOptionThrowsInvalidArgumentException()
     {
+        $this->expectException(InvalidArgumentException::class);
         $options = Options::fromArray([]);
         $options->foo;
     }

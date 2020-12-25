@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jhofm\FlysystemIterator\Test\Functional;
 
+use Jhofm\FlysystemIterator\IteratorException;
 use Jhofm\FlysystemIterator\Test\Framework\TestException;
 use SeekableIterator;
 
@@ -23,7 +24,7 @@ abstract class AbstractSeekableTest extends AbstractFileSystemIteratorTest
     /**
      * @throws TestException
      */
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
         $this->subject = $this->getSubject();
@@ -43,19 +44,19 @@ abstract class AbstractSeekableTest extends AbstractFileSystemIteratorTest
 
     /**
      * @test
-     * @expectedException \Jhofm\FlysystemIterator\IteratorException
      */
     public function testSeekNegativePositionThrowsException()
     {
+        $this->expectException(IteratorException::class);
         $this->subject->seek(-1);
     }
 
     /**
      * @test
-     * @expectedException \Jhofm\FlysystemIterator\IteratorException
      */
     public function testSeekOutOfBoundsThrowsException()
     {
+        $this->expectException(IteratorException::class);
         $this->subject->seek(100);
     }
 
