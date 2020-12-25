@@ -1,6 +1,13 @@
-# flysystem-iterator
+# flysystem-iterator (deprecated)
 
-Provides a plugin that creates an Iterator to iterate over paths in a Flysystem\FileSystem,
+## Deprecation
+
+This package is deprecated. [league/flysystem v2.0](https://packagist.org/packages/league/flysystem#2.0.0) supports filterable recursive iterators [out of the box](https://flysystem.thephpleague.com/v2/docs/usage/directory-listings/). 
+You can still use this plugin if for some reason you are unable to upgrade from version v1.x.
+
+## About
+
+Provides a plugin that creates an Iterator to iterate over paths in a [Flysystem](https://github.com/thephpleague/flysystem/tree/1.x)\\[FileSystem](https://github.com/thephpleague/flysystem/blob/1.x/src/Filesystem.php),
 supporting recursion and custom filters.
 
 Recursive iteration is more memory-efficient than Flysystem's recursive listContents lookup 
@@ -9,6 +16,46 @@ of the current item's ancestry are kept in memory.
 
 The returned iterator is seekable, countable and jsonserializable. Using these functions will often require
 a complete recursion over all items in the filesystem. 
+
+## Requirements
+
+ * PHP 7.0 - 7.4
+
+## Installation
+
+The library can be added to your project via composer.
+
+````console
+$ composer require jhofm/flysystem-iterator
+```` 
+ 
+## Quick Start
+
+```
+use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
+use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\Filesystem;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
+
+$fs = new Filesystem(
+    new LocalAdapter(
+        '/home/user',
+        LOCK_EX,
+        LocalAdapter::SKIP_LINKS
+    )
+);
+$fs->addPlugin(new IteratorPlugin());
+
+$iterator = $fs->createIterator(
+    ['filter' => FilterFactory::isFile()],
+    'subdirectory'
+);
+
+foreach ($iterator as $key => $item) {
+    echo $i . ' ' . $item['path'] . "\n";
+}
+var_dump(json_encode($iterator));
+``` 
  
 ## Configuration options ##
 Iterator behaviour can be controlled by passing a key/value configuration array to the plugin.
@@ -75,30 +122,5 @@ including boolean wrappers.
 A subdirectory can be specified as an optional second parameter to the createIterator() function.
 If omitted, the iterator will use the directory set by the filesystem adapter.
 
-## Usage example ##
-
-```
-use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
-use League\Flysystem\Adapter\Local as LocalAdapter;
-use League\Flysystem\Filesystem;
-use Jhofm\FlysystemIterator\Filter\FilterFactory;
-
-$fs = new Filesystem(
-    new LocalAdapter(
-        '/home/user',
-        LOCK_EX,
-        LocalAdapter::SKIP_LINKS
-    )
-);
-$fs->addPlugin(new IteratorPlugin());
-
-$iterator = $fs->createIterator(
-    ['filter' => FilterFactory::isFile(), 'skip-root' => true],
-    'subdirectory'
-);
-
-foreach ($iterator as $key => $item) {
-    echo $i . ' ' . $item['path'] . "\n";
-}
-var_dump(json_encode($iterator));
-```
+## Known Issues
+ * Filters do not work with path return values
