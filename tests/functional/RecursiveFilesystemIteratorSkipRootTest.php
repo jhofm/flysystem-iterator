@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jhofm\FlysystemIterator\Test\Functional;
 
+use Jhofm\FlysystemIterator\FilesystemFilterIterator;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use Jhofm\FlysystemIterator\Options\Options;
 use Jhofm\FlysystemIterator\Plugin\IteratorPlugin;
 use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
@@ -17,7 +19,7 @@ use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
  */
 class RecursiveFilesystemIteratorSkipRootTest extends AbstractFileSystemIteratorTest
 {
-    public function setUp() : void
+    public function setUp()
     {
         parent::setUp();
         $this->fs->addPlugin(new IteratorPlugin());
@@ -68,5 +70,29 @@ class RecursiveFilesystemIteratorSkipRootTest extends AbstractFileSystemIterator
         $this->assertEquals($expected[1], $iter->current());
         $arrayFromJson = json_decode(json_encode($iter), true);
         $this->assertCount(count($expected), $arrayFromJson);
+    }
+
+    /**
+     * @test
+     */
+    public function testRecursiveSkipRootWithFileFilter()
+    {
+        /** @var RecursiveFilesystemIteratorIterator $iter */
+        $iter = $this->fs->createIterator(
+            [
+                Options::OPTION_SKIP_ROOT_DIRECTORY => true,
+                Options::OPTION_FILTER => FilterFactory::isFile(),
+                Options::OPTION_IS_RECURSIVE => true
+            ]
+        );
+        $this->assertInstanceOf(FilesystemFilterIterator::class, $iter);
+        $iter->rewind();
+        $firstItem = $iter->current();
+        $this->assertEquals($this->expectedPaths[2], $firstItem['path']);
+        $this->assertEquals(0, $iter->key());
+        $expected = $this->expectedPaths;
+        $iter->seek(1);
+        $item = $iter->current();
+        $this->assertEquals($expected[4], $item['path']);
     }
 }

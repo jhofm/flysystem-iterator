@@ -24,7 +24,7 @@ class RecursiveFilesystemIteratorIteratorPathTest extends AbstractFileSystemIter
      * Test setup
      * @throws TestException
      */
-    protected function setUp() : void
+    protected function setUp()
     {
         parent::setUp();
         $this->subject = new RecursiveFilesystemIteratorIterator(

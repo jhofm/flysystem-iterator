@@ -31,7 +31,7 @@ class FilterFactory
 
     /**
      * Combines an array of closures in an OR expression
-     * @param Closure  ...$functions
+     * @param Closure ...$functions
      * @return Closure
      */
     public static function or(Closure ...$functions) : Closure
